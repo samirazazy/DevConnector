@@ -18,7 +18,7 @@ const Post = require('../../models/Post');
 router.get('/me', auth, async (req, res) => {
   try {
     const profile = await Profile.findOne({
-      user: req.user.id,
+      user: req.user.id
     }).populate('user', ['name', 'avatar']);
 
     if (!profile) {
@@ -41,8 +41,8 @@ router.post(
     auth,
     [
       check('status', 'Status is required').not().isEmpty(),
-      check('skills', 'Skills is required').not().isEmpty(),
-    ],
+      check('skills', 'Skills is required').not().isEmpty()
+    ]
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -61,7 +61,7 @@ router.post(
       twitter,
       instagram,
       linkedin,
-      facebook,
+      facebook
     } = req.body;
 
     const profileFields = {
@@ -77,7 +77,7 @@ router.post(
         ? skills
         : skills.split(',').map((skill) => ' ' + skill.trim()),
       status,
-      githubusername,
+      githubusername
     };
 
     // Build social object and add to profileFields
@@ -126,7 +126,7 @@ router.get(
   async ({ params: { user_id } }, res) => {
     try {
       const profile = await Profile.findOne({
-        user: user_id,
+        user: user_id
       }).populate('user', ['name', 'avatar']);
 
       if (!profile) return res.status(400).json({ msg: 'Profile not found' });
@@ -171,8 +171,8 @@ router.put(
       check('from', 'From date is required and needs to be from the past')
         .not()
         .isEmpty()
-        .custom((value, { req }) => (req.body.to ? value < req.body.to : true)),
-    ],
+        .custom((value, { req }) => (req.body.to ? value < req.body.to : true))
+    ]
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -187,7 +187,7 @@ router.put(
       from,
       to,
       current,
-      description,
+      description
     } = req.body;
 
     const newExp = {
@@ -197,7 +197,7 @@ router.put(
       from,
       to,
       current,
-      description,
+      description
     };
 
     try {
@@ -249,8 +249,8 @@ router.put(
       check('from', 'From date is required and needs to be from the past')
         .not()
         .isEmpty()
-        .custom((value, { req }) => (req.body.to ? value < req.body.to : true)),
-    ],
+        .custom((value, { req }) => (req.body.to ? value < req.body.to : true))
+    ]
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -265,7 +265,7 @@ router.put(
       from,
       to,
       current,
-      description,
+      description
     } = req.body;
 
     const newEdu = {
@@ -275,7 +275,7 @@ router.put(
       from,
       to,
       current,
-      description,
+      description
     };
 
     try {
@@ -321,7 +321,7 @@ router.get('/github/:username', async (req, res) => {
     );
     const headers = {
       'user-agent': 'node.js',
-      Authorization: `token ${config.get('githubToken')}`,
+      Authorization: `token ${config.get('githubToken')}`
     };
 
     const gitHubResponse = await axios.get(uri, { headers });
