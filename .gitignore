@@ -1,5 +1,6 @@
 #keys
-config/db.js
+config/production.json
+config/default.json
 
 # Logs
 logs
