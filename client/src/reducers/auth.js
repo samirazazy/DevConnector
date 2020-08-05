@@ -1,35 +1,79 @@
-import { REGISTER_FAIL, REGISTER_SUCCESS } from '../actions/types';
+import api from '../utils/api';
+import { setAlert } from './alert';
+import {
+  REGISTER_SUCCESS,
+  REGISTER_FAIL,
+  USER_LOADED,
+  AUTH_ERROR,
+  LOGIN_SUCCESS,
+  LOGIN_FAIL,
+  LOGOUT
+} from './types';
 
-const initialState = {
-  token: localStorage.getItem('token'),
-  isAuthenticated: null,
-  loading: true,
-  user: null
+// Load User
+export const loadUser = () => async (dispatch) => {
+  try {
+    const res = await api.get('/auth');
+
+    dispatch({
+      type: USER_LOADED,
+      payload: res.data
+    });
+  } catch (err) {
+    dispatch({
+      type: AUTH_ERROR
+    });
+  }
 };
 
-export default function (state = initialState, action) {
-  const { type, payload } = action;
+// Register User
+export const register = (formData) => async (dispatch) => {
+  try {
+    const res = await api.post('/users', formData);
 
-  switch (type) {
-    case REGISTER_SUCCESS:
-      localStorage.setItem('token', payload.token);
-      return {
-        ...state,
-        ...payload,
-        isAuthenticated: true,
-        loading: false
-      };
+    dispatch({
+      type: REGISTER_SUCCESS,
+      payload: res.data
+    });
+    dispatch(loadUser());
+  } catch (err) {
+    const errors = err.response.data.errors;
 
-    case REGISTER_FAIL:
-      localStorage.removeItem('token');
-      return {
-        ...state,
-        token: null,
-        isAuthenticated: false,
-        loading: false
-      };
+    if (errors) {
+      errors.forEach((error) => dispatch(setAlert(error.msg, 'danger')));
+    }
 
-    default:
-      return state;
+    dispatch({
+      type: REGISTER_FAIL
+    });
   }
-}
+};
+
+// Login User
+export const login = (email, password) => async (dispatch) => {
+  const body = { email, password };
+
+  try {
+    const res = await api.post('/auth', body);
+
+    dispatch({
+      type: LOGIN_SUCCESS,
+      payload: res.data
+    });
+
+    dispatch(loadUser());
+  } catch (err) {
+    const errors = err.response.data.errors;
+
+    if (errors) {
+      errors.forEach((error) => dispatch(setAlert(error.msg, 'danger')));
+    }
+
+    dispatch({
+      type: LOGIN_FAIL
+    });
+  }
+};
+
+// Logout
+export const logout = () => ({ type: LOGOUT });

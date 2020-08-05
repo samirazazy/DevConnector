@@ -8,13 +8,8 @@ const Alert = ({ alerts }) =>
   alerts.map((alert) => (
     <div key={alert.id} className={`alert alert-${alert.alertType}`}>
       {alert.msg}
-      <span onClick={hideAlert}>X</span>
     </div>
   ));
-
-function hideAlert() {
-  console.log('hide');
-}
 
 Alert.propTypes = {
   alerts: PropTypes.array.isRequired
