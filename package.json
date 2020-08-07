@@ -4,11 +4,12 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "node server",
-    "server": "nodemon server",
-    "client": "npm start --prefix client",
-    "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
+    "build": "cd reactjs && npm run build",
+    "install-reactjs": "cd reactjs && npm install",
+    "server": "nodemon --watch nodejs --exec babel-node nodejs/server.js",
+    "client": "cd reactjs && npm start",
+    "start": "concurrently  \"npm run server\" \"npm run client\"",
+    "heroku-postbuild": "npm run install-reactjs && npm run build"
   },
   "author": "Samir Azazy",
   "license": "ISC",
