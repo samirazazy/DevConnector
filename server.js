@@ -10,7 +10,7 @@ connectDB();
 app.use(express.json());
 
 // test API routes
-// app.get('/', (req, res) => res.send('API runing'));
+app.get('/', (req, res) => res.send('API runing'));
 
 // define routes
 app.use('/api/users', require('./routes/api/users'));
