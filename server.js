@@ -27,8 +27,9 @@ app.use('/api/posts', require('./routes/api/posts'));
 //     res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
 //   });
 // }
+
 if (process.env.NODE_ENV == 'production') {
-  app.use(express.static('reactjs/build'));
+    app.use(express.static('reactjs/build'));
 }
 
 const PORT = process.env.PORT || 5000;
