@@ -11,11 +11,10 @@ const connectDB = async () => {
       useUnifiedTopology: true
     });
 
-    console.log('mongoDB connected ✨✨✨');
+    console.log('MongoDB Connected...');
   } catch (err) {
-    console.log(err.message);
-
-    //Exit process with field
+    console.error(err.message);
+    // Exit process with failure
     process.exit(1);
   }
 };

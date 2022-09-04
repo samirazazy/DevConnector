@@ -16,7 +16,7 @@ const initialState = {
   user: null
 };
 
-export default function (state = initialState, action) {
+function authReducer(state = initialState, action) {
   const { type, payload } = action;
 
   switch (type) {
@@ -28,12 +28,6 @@ export default function (state = initialState, action) {
         user: payload
       };
     case REGISTER_SUCCESS:
-      return {
-        ...state,
-        ...payload,
-        isAuthenticated: true,
-        loading: false
-      };
     case LOGIN_SUCCESS:
       return {
         ...state,
@@ -42,13 +36,6 @@ export default function (state = initialState, action) {
         loading: false
       };
     case ACCOUNT_DELETED:
-      return {
-        ...state,
-        token: null,
-        isAuthenticated: false,
-        loading: false,
-        user: null
-      };
     case AUTH_ERROR:
     case LOGOUT:
       return {
@@ -62,3 +49,5 @@ export default function (state = initialState, action) {
       return state;
   }
 }
+
+export default authReducer;
